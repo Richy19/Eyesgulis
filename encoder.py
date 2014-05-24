@@ -2,7 +2,7 @@
 import hashlib
 import sys
 
-def encode(msg, key, hashsys):
+def encode(msg, key, hashsys='sha1'):
 	msg = msg.replace('\r', "").replace('\n', '')
 	key = key.replace('\r', "").replace('\n', '')
 	encoded_msg = []

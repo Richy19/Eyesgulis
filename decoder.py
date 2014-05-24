@@ -22,7 +22,11 @@ def decode(msg, key, hashsys):
 			full_hash = new_msg[n] + new_msg[n-1]
 			for a in ascii:
 				for i in ascii:
-					hash = hashlib.new(hashsys)
+					try:
+						hash = hashlib.new(str(hashsys))
+					except ValueError:
+						print("Error: hash {h} does not exist, using sha1".format(h=hashsys))
+						hash = hashlib.sha1()
 					hash.update(a.encode() + i.encode() + key.encode())
 					if hash.hexdigest() == full_hash:
 						decoded += a + i
