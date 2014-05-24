@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 # A04 decoder logic by Eyes, inspired by Monocle
+# coding: utf-8
 import sys
 import hashlib
 
 def decode(msg, key, hashsys):
-	ascii = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM',.?!@/ '~[]{}-_=+<>|£$%^&*()"
+	ascii = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM',.?!@/ '~[]{}-_=+<>|$%^&*()"
 	msg = msg.replace('\r', ' ')
 	msg = msg.replace('\n', ' ')
 	msg = msg.replace('  ', ' ')
