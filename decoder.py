@@ -45,6 +45,18 @@ def decode(msg, key):
 	return decoded
 
 if __name__ == "__main__":
-	msg = input("Message to decode: ")
-	key = input("Key for message: ")
+	msg = None
+	key = None
+
+	for arg in sys.argv[1:]:
+		if arg.startswith('--msg='):
+			msg = arg[6:]
+		if arg.startswith('--key='):
+			key = arg[6:]
+
+	if msg is None:
+		msg = input("Message to decode: ")
+	if key is None:
+		key = input("Key for message: ")
+
 	print("Decoded output:", decode(msg, key))		
