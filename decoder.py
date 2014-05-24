@@ -4,7 +4,7 @@
 import sys
 import hashlib
 
-def decode(msg, key, hashsys):
+def decode(msg, key, hashsys='sha1'):
 	ascii = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM',.?!@/ '~[]{}-_=+<>|$%^&*()"
 	msg = msg.replace('\r', ' ')
 	msg = msg.replace('\n', ' ')
