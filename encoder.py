@@ -6,7 +6,7 @@ def encode(msg, key, hashsys):
 	msg = msg.replace('\r', "").replace('\n', '')
 	key = key.replace('\r', "").replace('\n', '')
 	encoded_msg = []
-	for x in ([msg[i:i+2] for i in range(0, len(input_str), 2)]):
+	for x in ([msg[i:i+2] for i in range(0, len(msg), 2)]):
 		if len(x) == 1:
 			x = x + ' '
 		try:
