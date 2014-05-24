@@ -47,7 +47,7 @@ def decode(msg, key, hashsys):
 if __name__ == "__main__":
 	msg = None
 	key = None
-	hash = 'sha1'
+	hashsys = 'sha1'
 	for arg in sys.argv[1:]:
 		if arg.startswith('--msg='):
 			msg = arg[6:]
@@ -55,7 +55,7 @@ if __name__ == "__main__":
 			key = arg[6:]
 		if arg.startswith('--hash='):
 			if arg[7:] in hashlib.algorithms_available:
-				hash = arg[7:]
+				hashsys = arg[7:]
 			else:
 				print("Error: hash {h} is not supported, defaulting to sha1".format(h=arg[7:]))
 
@@ -65,4 +65,4 @@ if __name__ == "__main__":
 		key = input("Key for message: ")
 	
 
-	print("Decoded output:", decode(msg, key, hash))
+	print("Decoded output:", decode(msg, key, hashsys))

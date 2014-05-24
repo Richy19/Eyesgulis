@@ -5,7 +5,7 @@ import sys
 input_str = None
 key_str = None
 
-def encode(msg, key, hash_sys):
+def encode(msg, key, hashsys):
 	msg = msg.replace('\r', "").replace('\n', '')
 	key = key.replace('\r', "").replace('\n', '')
 	encoded_msg = []
@@ -13,9 +13,9 @@ def encode(msg, key, hash_sys):
 		if len(x) == 1:
 			x = x + ' '
 		try:
-			hash = hashlib.new(str(hash_sys))
+			hash = hashlib.new(str(hashsys))
 		except ValueError:
-			print("Error: hash {h} does not exist, using sha1".format(h=hash_sys))
+			print("Error: hash {h} does not exist, using sha1".format(h=hashsys))
 			hash = hashlib.sha1()
 		hash.update(x.encode()+key_str.encode())
 		encoded_msg.append(hash.hexdigest()[int(len(hash.hexdigest())/2):])
@@ -23,7 +23,7 @@ def encode(msg, key, hash_sys):
 	return encoded_msg
 
 if __name__ == '__main__':
-	hash = 'sha1'
+	hashsys = 'sha1'
 	for arg in sys.argv[1:]:
 		if arg.startswith('--msg='):
 			input_str = arg[6:]
@@ -31,7 +31,7 @@ if __name__ == '__main__':
 			key_str = arg[6:]
 		if arg.startswith('--hash='):
 			if arg[7:] in hashlib.algorithms_available:
-				hash = arg[7:]
+				hashsys = arg[7:]
 			else:
 				print("Error: hash {h} does not exist, using sha1".format(h=arg[7:]))
 
@@ -39,5 +39,5 @@ if __name__ == '__main__':
 		input_str = input("Message to encode: ")
 	if key_str is None:
 		key_str = input("Key for message: ")
-	print("\nEncoded message:", ' '.join(encode(input_str, key_str, hash)))
+	print("\nEncoded message:", ' '.join(encode(input_str, key_str, hashsys)))
 
