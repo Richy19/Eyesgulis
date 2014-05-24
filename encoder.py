@@ -14,7 +14,7 @@ def encode(msg, key, hashsys):
 		except ValueError:
 			print("Error: hash {h} does not exist, using sha1".format(h=hashsys))
 			hash = hashlib.sha1()
-		hash.update(x.encode()+key_str.encode())
+		hash.update(x.encode()+key.encode())
 		encoded_msg.append(hash.hexdigest()[int(len(hash.hexdigest())/2):])
 		encoded_msg.append(hash.hexdigest()[:int(len(hash.hexdigest())/2)])
 	return encoded_msg
