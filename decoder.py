@@ -69,4 +69,4 @@ if __name__ == "__main__":
 	if args.key is None:
 		args.key = input('Key for message: ')
 
-	print('\nDecoded message:', ' '.join(encode(args.msg, args.key, args.hash, args.verbose)))
+	print('\nDecoded message:', decode(args.msg, args.key, args.hash, args.verbose))
