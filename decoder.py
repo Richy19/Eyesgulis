@@ -16,6 +16,8 @@ def decode(msg, key):
 	for n, x in enumerate(new_msg):
 		print("Decoding message part {x} [{n1}/{n2}]".format(x=x, n1=n+1, n2=len(new_msg)))
 		part_decoded = False
+		aa = None
+		ii = None
 		if n != 0 and n % 2 != 0:
 			full_hash = new_msg[n] + new_msg[n-1]
 			for a in ascii:
@@ -24,12 +26,16 @@ def decode(msg, key):
 					sha1.update(a.encode() + i.encode() + key.encode())
 					if sha1.hexdigest() == full_hash:
 						decoded += a + i
+						aa = a
+						ii = i
 						part_decoded = True
 						break
 					else:
 						continue
+		else:
+			continue
 		if part_decoded:
-			print("{fh} -> {a}{i}".format(fh=full_hash, a=a, i=i))
+			print("{fh} -> {a}{i}".format(fh=full_hash, a=aa, i=ii))
 		else:
 			print("No result found for hash, are you using the right key?")
 	#for i in ascii:
