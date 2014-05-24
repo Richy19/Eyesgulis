@@ -5,14 +5,18 @@ import sys
 input_str = None
 key_str = None
 
-def encode(msg, key, hash):
+def encode(msg, key, hash_sys):
 	msg = msg.replace('\r', "").replace('\n', '')
 	key = key.replace('\r', "").replace('\n', '')
 	encoded_msg = []
 	for x in ([msg[i:i+2] for i in range(0, len(input_str), 2)]):
 		if len(x) == 1:
 			x = x + ' '
-		hash = hashlib.new(hash)
+		try:
+			hash = hashlib.new(str(hash_sys))
+		except ValueError:
+			print("Error: hash {h} does not exist, using sha1".format(h=hash_sys))
+			hash = hashlib.sha1()
 		hash.update(x.encode()+key_str.encode())
 		encoded_msg.append(hash.hexdigest()[int(len(hash.hexdigest())/2):])
 		encoded_msg.append(hash.hexdigest()[:int(len(hash.hexdigest())/2)])
