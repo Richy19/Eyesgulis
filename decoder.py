@@ -4,7 +4,7 @@
 import sys
 import hashlib
 
-def decode(msg, key, hashsys='sha1'):
+def decode(msg, key, hashsys='sha1', verbose=False):
 	ascii = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM',.?!@/ '~[]{}-_=+<>|$%^&*()"
 	msg = msg.replace('\r', ' ')
 	msg = msg.replace('\n', ' ')
@@ -15,7 +15,8 @@ def decode(msg, key, hashsys='sha1'):
 	decoded = ""
 
 	for n, x in enumerate(new_msg):
-		print("Decoding message part {x} [{n1}/{n2}]".format(x=x, n1=n+1, n2=len(new_msg)))
+		if verbose:
+			print("Decoding message part {x} [{n1}/{n2}]".format(x=x, n1=n+1, n2=len(new_msg)))
 		part_decoded = False
 		aa = None
 		ii = None
@@ -40,7 +41,8 @@ def decode(msg, key, hashsys='sha1'):
 		else:
 			continue
 		if part_decoded:
-			print("{fh} -> {a}{i}".format(fh=full_hash, a=aa, i=ii))
+			if verbose:
+				print("{fh} -> {a}{i}".format(fh=full_hash, a=aa, i=ii))
 		else:
 			print("No result found for hash, are you using the right key?")
 	#for i in ascii:
@@ -53,6 +55,7 @@ if __name__ == "__main__":
 	msg = None
 	key = None
 	hashsys = 'sha1'
+	verbose = False
 	for arg in sys.argv[1:]:
 		if arg.startswith('--msg='):
 			msg = arg[6:]
@@ -63,10 +66,12 @@ if __name__ == "__main__":
 				hashsys = arg[7:]
 			else:
 				print("Error: hash {h} is not supported, defaulting to sha1".format(h=arg[7:]))
+		if arg == '--verbose':
+			verbose = True
 
 	if msg is None:
 		msg = input("Message to decode: ")
 	if key is None:
 		key = input("Key for message: ")
 	
-	print("Decoded output:", decode(msg, key, hashsys))
+	print("Decoded output:", decode(msg, key, hashsys, verbose))
