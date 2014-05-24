@@ -2,8 +2,19 @@
 import hashlib
 import sys
 
-input_str = input("Message to encode: ")
-key_str = input("Key for message: ")
+input_str = None
+key_str = None
+
+for arg in sys.argv[1:]:
+	if arg.startswith('--input='):
+		input_str = arg[8:]
+	if arg.startswith('--key='):
+		key_str = arg[6:]
+
+if input_str is None:
+	input_str = input("Message to encode: ")
+if key_str is None:
+	key_str = input("Key for message: ")
 
 input_str = input_str.replace('\r', ' ').replace('\n', ' ')
 key_str = key_str.replace('\r',  ' ').replace('\n', ' ')
