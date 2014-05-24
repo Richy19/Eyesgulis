@@ -38,5 +38,5 @@ if __name__ == '__main__':
 		input_str = input("Message to encode: ")
 	if key is None:
 		key_str = input("Key for message: ")
-	print("\nEncoded message:", ' '.join(encode(msg, key, hashsys)))
 
+	print("\nEncoded message:", ' '.join(encode(msg, key, hashsys)))

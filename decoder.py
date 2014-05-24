@@ -64,5 +64,4 @@ if __name__ == "__main__":
 	if key is None:
 		key = input("Key for message: ")
 	
-
 	print("Decoded output:", decode(msg, key, hashsys))
