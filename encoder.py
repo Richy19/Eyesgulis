@@ -7,12 +7,9 @@ key_str = input("Key for message: ")
 
 input_str = input_str.replace('\r', ' ').replace('\n', ' ')
 key_str = key_str.replace('\r',  ' ').replace('\n', ' ')
-#print(input_str)
-new_msg = [input_str[i:i+2] for i in range(0, len(input_str), 2)]
-#print(new_msg)
 encoded_msg = []
 
-for x in new_msg:
+for x in ([input_str[i:i+2] for i in range(0, len(input_str), 2)]):
 	if len(x) == 1:
 		x = x + ' '
 	sha1 = hashlib.sha1()
