@@ -9,6 +9,7 @@ def decode(msg, key, hashsys='sha1', verbose=False):
 	msg = msg.replace('\r', ' ')
 	msg = msg.replace('\n', ' ')
 	msg = msg.replace('  ', ' ')
+	key = key.replace('\r', '').replace('\n', '')
 	new_msg = msg.split(' ')
 	strlen = len(new_msg)
 	swap = True
