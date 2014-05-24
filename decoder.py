@@ -3,7 +3,7 @@
 import sys
 import hashlib
 
-def decode(msg, key):
+def decode(msg, key, hashsys):
 	ascii = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM',.?!@/ "
 	msg = msg.replace('\r', ' ')
 	msg = msg.replace('\n', ' ')
@@ -22,9 +22,9 @@ def decode(msg, key):
 			full_hash = new_msg[n] + new_msg[n-1]
 			for a in ascii:
 				for i in ascii:
-					sha1 = hashlib.sha1()
-					sha1.update(a.encode() + i.encode() + key.encode())
-					if sha1.hexdigest() == full_hash:
+					hash = hashlib.new(hashsys)
+					hash.update(a.encode() + i.encode() + key.encode())
+					if hash.hexdigest() == full_hash:
 						decoded += a + i
 						aa = a
 						ii = i
@@ -47,16 +47,22 @@ def decode(msg, key):
 if __name__ == "__main__":
 	msg = None
 	key = None
-
+	hash = 'sha1'
 	for arg in sys.argv[1:]:
 		if arg.startswith('--msg='):
 			msg = arg[6:]
 		if arg.startswith('--key='):
 			key = arg[6:]
+		if arg.startswith('--hash='):
+			if arg[7:] in hashlib.algorithms_available:
+				hash = arg[7:]
+			else:
+				print("Error: hash {h} is not supported, defaulting to sha1".format(h=arg[7:]))
 
 	if msg is None:
 		msg = input("Message to decode: ")
 	if key is None:
 		key = input("Key for message: ")
+	
 
-	print("Decoded output:", decode(msg, key))		
+	print("Decoded output:", decode(msg, key, hash))
