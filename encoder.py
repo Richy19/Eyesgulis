@@ -2,21 +2,31 @@
 import hashlib
 import sys
 
-input_str = input("Message to encode: ")
-key_str = input("Key for message: ")
+input_str = None
+key_str = None
 
-input_str = input_str.replace('\r', ' ').replace('\n', ' ')
-key_str = key_str.replace('\r',  ' ').replace('\n', ' ')
-#print(input_str)
-new_msg = [input_str[i:i+2] for i in range(0, len(input_str), 2)]
-#print(new_msg)
-encoded_msg = []
+def encode(msg, key):
+	msg = msg.replace('\r', "").replace('\n', '')
+	key = key.replace('\r', "").replace('\n', '')
+	encoded_msg = []
+	for x in ([msg[i:i+2] for i in range(0, len(input_str), 2)]):
+		if len(x) == 1:
+			x = x + ' '
+		sha1 = hashlib.sha1()
+		sha1.update(x.encode()+key_str.encode())
+		encoded_msg.append(sha1.hexdigest()[20:])
+		encoded_msg.append(sha1.hexdigest()[:20])
+	return encoded_msg
 
-for x in new_msg:
-	if len(x) == 1:
-		x = x + ' '
-	sha1 = hashlib.sha1()
-	sha1.update(x.encode() + key_str.encode())
-	encoded_msg.append(sha1.hexdigest()[20:])
-	encoded_msg.append(sha1.hexdigest()[:20])
-print(' '.join(encoded_msg))
+if __name__ == '__main__':
+	for arg in sys.argv[1:]:
+		if arg.startswith('--msg='):
+			input_str = arg[6:]
+		if arg.startswith('--key='):
+			key_str = arg[6:]
+
+	if input_str is None:
+		input_str = input("Message to encode: ")
+	if key_str is None:
+		key_str = input("Key for message: ")
+	print("\nEncoded message:", ' '.join(encode(input_str, key_str)))
