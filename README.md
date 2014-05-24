@@ -18,6 +18,7 @@ The following command line flags can be added to the commands:
 * `--key='secret key'`
 * `--msg='message to encode/decode'`
 * `--hash='hashing algorithm'`
+* `--verbose`
 
 ## License ##
 
