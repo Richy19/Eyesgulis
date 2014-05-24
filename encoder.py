@@ -6,8 +6,8 @@ input_str = None
 key_str = None
 
 for arg in sys.argv[1:]:
-	if arg.startswith('--input='):
-		input_str = arg[8:]
+	if arg.startswith('--msg='):
+		input_str = arg[6:]
 	if arg.startswith('--key='):
 		key_str = arg[6:]
 
