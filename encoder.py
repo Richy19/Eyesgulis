@@ -30,3 +30,4 @@ if __name__ == '__main__':
 	if key_str is None:
 		key_str = input("Key for message: ")
 	print("\nEncoded message:", ' '.join(encode(input_str, key_str)))
+
