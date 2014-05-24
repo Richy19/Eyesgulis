@@ -54,26 +54,19 @@ def decode(msg, key, hashsys='sha1', verbose=False):
 	return decoded
 
 if __name__ == "__main__":
-	msg = None
-	key = None
-	hashsys = 'sha1'
-	verbose = False
-	for arg in sys.argv[1:]:
-		if arg.startswith('--msg='):
-			msg = arg[6:]
-		if arg.startswith('--key='):
-			key = arg[6:]
-		if arg.startswith('--hash='):
-			if arg[7:] in hashlib.algorithms_available:
-				hashsys = arg[7:]
-			else:
-				print("Error: hash {h} is not supported, defaulting to sha1".format(h=arg[7:]))
-		if arg == '--verbose':
-			verbose = True
+	import argparse
 
-	if msg is None:
-		msg = input("Message to decode: ")
-	if key is None:
-		key = input("Key for message: ")
-	
-	print("Decoded output:", decode(msg, key, hashsys, verbose))
+	parser = argparse.ArgumentParser(description='Decodes text using A04.')
+	parser.add_argument('--msg', help='message to decode', metavar='MSG')
+	parser.add_argument('--key', help='secret key for decoding', metavar='KEY')
+	parser.add_argument('--hash', default='sha1', choices=hashlib.algorithms_available, help='the hashing mechanism (default: %(default)s)', metavar='MECHANISM')
+	parser.add_argument('-v', '--verbose', action='store_true', default=False, help='ask for additional output (default: do not)')
+
+	args = parser.parse_args()
+
+	if args.msg is None:
+		args.msg = input('Message to decode: ')
+	if args.key is None:
+		args.key = input('Key for message: ')
+
+	print('\nDecoded message:', ' '.join(encode(args.msg, args.key, args.hash, args.verbose)))
