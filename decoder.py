@@ -14,6 +14,12 @@ def decode(msg, key, hashsys='sha1', verbose=False):
 	swap = True
 	decoded = ""
 
+	try:
+		hash = hashlib.new(str(hashsys))
+	except ValueError:
+		print("Error: hash {h} is not supported, defaulting to sha1".format(h=hashsys))
+		hashsys = 'sha1'
+
 	for n, x in enumerate(new_msg):
 		if verbose:
 			print("Decoding message part {x} [{n1}/{n2}]".format(x=x, n1=n+1, n2=len(new_msg)))
@@ -24,11 +30,7 @@ def decode(msg, key, hashsys='sha1', verbose=False):
 			full_hash = new_msg[n] + new_msg[n-1]
 			for a in ascii:
 				for i in ascii:
-					try:
-						hash = hashlib.new(str(hashsys))
-					except ValueError:
-						print("Error: hash {h} does not exist, using sha1".format(h=hashsys))
-						hash = hashlib.sha1()
+					hash = hashlib.new(str(hashsys))
 					hash.update(a.encode() + i.encode() + key.encode())
 					if hash.hexdigest() == full_hash:
 						decoded += a + i
