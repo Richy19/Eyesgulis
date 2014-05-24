@@ -35,8 +35,8 @@ if __name__ == '__main__':
 				print("Error: hash {h} does not exist, using sha1".format(h=arg[7:]))
 
 	if msg is None:
-		input_str = input("Message to encode: ")
+		msg = input("Message to encode: ")
 	if key is None:
-		key_str = input("Key for message: ")
+		key = input("Key for message: ")
 
 	print("\nEncoded message:", ' '.join(encode(msg, key, hashsys)))
