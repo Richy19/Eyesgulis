@@ -25,8 +25,8 @@ if __name__ == '__main__':
 	import argparse
 
 	parser = argparse.ArgumentParser(description='Encodes text using A04.')
-	parser.add_argument('--msg', help='message to encode', metavar='MSG')
-	parser.add_argument('--key', help='secret key for encoding', metavar='KEY')
+	parser.add_argument('--msg', help='message to encode', metavar='MSG', nargs='+')
+	parser.add_argument('--key', help='secret key for encoding', metavar='KEY', nargs='+')
 	parser.add_argument('--hash', default='sha1', choices=hashlib.algorithms_available, help='the hashing mechanism (default: %(default)s)', metavar='MECHANISM')
 	parser.add_argument('-v', '--verbose', action='store_true', default=False, help='ask for additional output (default: do not)')
 
@@ -34,7 +34,11 @@ if __name__ == '__main__':
 
 	if args.msg is None:
 		args.msg = input('Message to encode: ')
+	else:
+		args.msg = ' '.join(args.msg)
 	if args.key is None:
 		args.key = input('Key for message: ')
+	else:
+		args.key = ' '.join(args.key)
 
 	print('\nEncoded message:', ' '.join(encode(args.msg, args.key, args.hash, args.verbose)))
