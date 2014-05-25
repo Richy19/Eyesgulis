@@ -2,7 +2,7 @@
 import hashlib
 import sys
 
-def encode(msg, key, hashsys='sha1'):
+def encode(msg, key, hashsys='sha1', verbose=False):
 	try:
 		hash = hashlib.new(str(hashsys))
 	except ValueError:
@@ -22,23 +22,19 @@ def encode(msg, key, hashsys='sha1'):
 	return encoded_msg
 
 if __name__ == '__main__':
-	msg = None
-	key = None
-	hashsys = 'sha1'
-	for arg in sys.argv[1:]:
-		if arg.startswith('--msg='):
-			msg = arg[6:]
-		if arg.startswith('--key='):
-			key = arg[6:]
-		if arg.startswith('--hash='):
-			if arg[7:] in hashlib.algorithms_available:
-				hashsys = arg[7:]
-			else:
-				print("Error: hash {h} does not exist, using sha1".format(h=arg[7:]))
+	import argparse
 
-	if msg is None:
-		msg = input("Message to encode: ")
-	if key is None:
-		key = input("Key for message: ")
+	parser = argparse.ArgumentParser(description='Encodes text using A04.')
+	parser.add_argument('--msg', help='message to encode', metavar='MSG')
+	parser.add_argument('--key', help='secret key for encoding', metavar='KEY')
+	parser.add_argument('--hash', default='sha1', choices=hashlib.algorithms_available, help='the hashing mechanism (default: %(default)s)', metavar='MECHANISM')
+	parser.add_argument('-v', '--verbose', action='store_true', default=False, help='ask for additional output (default: do not)')
 
-	print("\nEncoded message:", ' '.join(encode(msg, key, hashsys)))
+	args = parser.parse_args()
+
+	if args.msg is None:
+		args.msg = input('Message to encode: ')
+	if args.key is None:
+		args.key = input('Key for message: ')
+
+	print('\nEncoded message:', ' '.join(encode(args.msg, args.key, args.hash, args.verbose)))

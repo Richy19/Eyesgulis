@@ -9,16 +9,9 @@ A04 encryption protocol as used by Exingulis
 ./encoder.py
 # decode secret message
 ./decoder.py
+
+# use the --help flag to find out about cool features
 ```
-
-### Flags ###
-
-The following command line flags can be added to the commands:
-
-* `--key='secret key'`
-* `--msg='message to encode/decode'`
-* `--hash='hashing algorithm'`
-* `--verbose`
 
 ## License ##
 
