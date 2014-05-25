@@ -45,14 +45,16 @@ def decode(msg, key, hashsys='sha1', verbose=False, very_verbose=False):
 						rndbit = binascii.unhexlify(random_bit.encode('utf-8'))
 						hash.update(a.encode() + i.encode() + rndbit + key.encode())
 					if hash.hexdigest() == full_hash:
-						print("{fh} == {h}, decoded".format(fh=full_hash, h=hash.hexdigest()))
+						if very_verbose:
+							print("{fh} == {h}, decoded".format(fh=full_hash, h=hash.hexdigest()))
 						decoded += a + i
 						aa = a
 						ii = i
 						part_decoded = True
 						break
 					else:
-						print("{fh} != {h}, continuing".format(fh=full_hash, h=hash.hexdigest()))
+						if very_verbose:
+							print("{fh} != {h}, continuing".format(fh=full_hash, h=hash.hexdigest()))
 						continue
 		else:
 			continue
