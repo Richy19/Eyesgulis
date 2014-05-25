@@ -53,16 +53,16 @@ def decode(msg, key, hashsys='sha1', verbose=False, very_verbose=False):
 						part_decoded = True
 						break
 					else:
-						if very_verbose:
-							print("{fh} != {h}, continuing".format(fh=full_hash, h=hash.hexdigest()))
+						#if very_verbose:
+							#print("{fh} != {h}, continuing".format(fh=full_hash, h=hash.hexdigest()))
 						continue
 		else:
 			continue
 		if part_decoded:
-			if verbose:
+			if verbose or very_verbose:
 				print("{fh} -> {a}{i}".format(fh=full_hash, a=aa, i=ii))
 		else:
-			print("No result found for hash, are you using the right key?")
+			if verbose or very_verbose: print("No result found for hash, are you using the right key?")
 	#for i in ascii:
 		#decoded = decoded.replace(i+i, i)
 		
@@ -90,4 +90,9 @@ if __name__ == "__main__":
 	else:
 		args.key = ' '.join(args.msg)
 	print('Decoding...')
-	print('Decoded message:', decode(args.msg, args.key, args.hash, args.verbose, args.very_verbose))
+	decoded = decode(args.msg, args.key, args.hash, args.verbose, args.very_verbose)
+	#print('Decoded message:', decode(args.msg, args.key, args.hash, args.verbose, args.very_verbose))
+	if decoded == '':
+		print("Decoder returned nothing. Are you using the right key/hashing system?")
+	else:
+		print("Decoded message:", decoded)
