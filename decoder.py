@@ -6,7 +6,7 @@ import hashlib
 import binascii
 
 def decode(msg, key, hashsys='sha1', verbose=False):
-	ascii = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM',.?!@/ '~[]{}-_=+<>|$%^&*()"
+	ascii = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM',.?!@/ '~[]{}-_=+<>|$%^&*():;`\""
 	msg = msg.replace('\r', ' ')
 	msg = msg.replace('\n', ' ')
 	msg = msg.replace('  ', ' ')
