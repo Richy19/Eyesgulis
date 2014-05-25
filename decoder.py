@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 # A04 decoder logic by Eyes, inspired by Monocle
-# coding: utf-8
+# -*- coding: utf-8 -*-
 import sys
 import hashlib
+import binascii
 
 def decode(msg, key, hashsys='sha1', verbose=False):
 	ascii = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM',.?!@/ '~[]{}-_=+<>|$%^&*()"
@@ -28,11 +29,21 @@ def decode(msg, key, hashsys='sha1', verbose=False):
 		aa = None
 		ii = None
 		if n != 0 and n % 2 != 0:
+			if ':' in new_msg[n-1]:
+				sp = new_msg[n-1].split(':')
+				new_msg[n-1] = sp[0]
+				random_bit = sp[1]
+			else:
+				random_bit = ''
 			full_hash = new_msg[n] + new_msg[n-1]
 			for a in ascii:
 				for i in ascii:
 					hash = hashlib.new(str(hashsys))
-					hash.update(a.encode() + i.encode() + key.encode())
+					if random_bit == '':
+						hash.update(a.encode() + i.encode() + key.encode())
+					else:
+						rndbit = binascii.unhexlify(random_bit.encode('utf-8'))
+						hash.update(a.encode() + i.encode() + rndbit + key.encode())
 					if hash.hexdigest() == full_hash:
 						decoded += a + i
 						aa = a
@@ -73,5 +84,5 @@ if __name__ == "__main__":
 		args.key = input('Key for message: ')
 	else:
 		args.key = ' '.join(args.msg)
-
-	print('\nDecoded message:', decode(args.msg, args.key, args.hash, args.verbose))
+	print('Decoding...')
+	print('Decoded message:', decode(args.msg, args.key, args.hash, args.verbose))
