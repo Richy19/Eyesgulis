@@ -1,6 +1,6 @@
-# a04 #
+# Eyesgulis #
 
-A04 encryption protocol as used by Exingulis
+The Eyesgulis encryption system. Uses a one-way hash to encode plaintext/ASCII messages, with optional mutation and hash system.
 
 ## Usage ##
 
