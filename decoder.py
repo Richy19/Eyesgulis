@@ -5,7 +5,7 @@ import sys
 import hashlib
 import binascii
 
-def decode(msg, key, hashsys='sha1', verbose=False):
+def decode(msg, key, hashsys='sha1', verbose=False, very_verbose=False):
 	ascii = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM',.?!@/ '~[]{}-_=+<>|$%^&*():;`\""
 	msg = msg.replace('\r', ' ')
 	msg = msg.replace('\n', ' ')
@@ -23,7 +23,7 @@ def decode(msg, key, hashsys='sha1', verbose=False):
 		hashsys = 'sha1'
 
 	for n, x in enumerate(new_msg):
-		if verbose:
+		if verbose or very_verbose:
 			print("Decoding message part {x} [{n1}/{n2}]".format(x=x, n1=n+1, n2=len(new_msg)))
 		part_decoded = False
 		aa = None
@@ -45,12 +45,14 @@ def decode(msg, key, hashsys='sha1', verbose=False):
 						rndbit = binascii.unhexlify(random_bit.encode('utf-8'))
 						hash.update(a.encode() + i.encode() + rndbit + key.encode())
 					if hash.hexdigest() == full_hash:
+						print("{fh} == {h}, decoded".format(fh=full_hash, h=hash.hexdigest()))
 						decoded += a + i
 						aa = a
 						ii = i
 						part_decoded = True
 						break
 					else:
+						print("{fh} != {h}, continuing".format(fh=full_hash, h=hash.hexdigest()))
 						continue
 		else:
 			continue
@@ -73,6 +75,7 @@ if __name__ == "__main__":
 	parser.add_argument('--key', help='secret key for decoding', metavar='KEY', nargs='+')
 	parser.add_argument('--hash', default='sha1', choices=hashlib.algorithms_available, help='the hashing mechanism (default: %(default)s)', metavar='MECHANISM')
 	parser.add_argument('-v', '--verbose', action='store_true', default=False, help='ask for additional output (default: do not)')
+	parser.add_argument('-V', '--very_verbose', action='store_true', default=False, help='even more verbose output')
 
 	args = parser.parse_args()
 
@@ -85,4 +88,4 @@ if __name__ == "__main__":
 	else:
 		args.key = ' '.join(args.msg)
 	print('Decoding...')
-	print('Decoded message:', decode(args.msg, args.key, args.hash, args.verbose))
+	print('Decoded message:', decode(args.msg, args.key, args.hash, args.verbose, args.very_verbose))
