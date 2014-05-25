@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # A04 decoder logic by Eyes, inspired by Monocle
 # -*- coding: utf-8 -*-
-import sys
+import os
 import hashlib
 import binascii
 
@@ -78,17 +78,21 @@ if __name__ == "__main__":
 	parser.add_argument('--hash', default='sha1', choices=hashlib.algorithms_available, help='the hashing mechanism (default: %(default)s)', metavar='MECHANISM')
 	parser.add_argument('-v', '--verbose', action='store_true', default=False, help='ask for additional output (default: do not)')
 	parser.add_argument('-V', '--very_verbose', action='store_true', default=False, help='even more verbose output')
+	parser.add_argument('-f', '--file', help='file to open instead of message')
 
 	args = parser.parse_args()
 
-	if args.msg is None:
+	if args.msg is None and args.file is None:
 		args.msg = input('Message to decode: ')
-	else:
+	elif args.msg is not None and args.file is None:
 		args.msg = ' '.join(args.msg)
 	if args.key is None:
 		args.key = input('Key for message: ')
 	else:
 		args.key = ' '.join(args.msg)
+	if args.file is not None:
+		if os.path.exists(args.file):
+			with open(args.file, 'r') as f: args.msg = f.read()
 	print('Decoding...')
 	decoded = decode(args.msg, args.key, args.hash, args.verbose, args.very_verbose)
 	#print('Decoded message:', decode(args.msg, args.key, args.hash, args.verbose, args.very_verbose))
