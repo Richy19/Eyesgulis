@@ -13,7 +13,8 @@ def encode(msg, key, hashsys='sha1', verbose=False, mutate=False):
 
 	msg = msg.replace('\r', "").replace('\n', '')
 	key = key.replace('\r', "").replace('\n', '')
-	encoded_msg = []	
+	encoded_msg = []
+	mutation_key = []
 	for x in ([msg[i:i+2] for i in range(0, len(msg), 2)]):
 		if len(x) == 1:
 			x = x + ' '
@@ -26,13 +27,14 @@ def encode(msg, key, hashsys='sha1', verbose=False, mutate=False):
 		hash = hashlib.new(str(hashsys))
 		if verbose:
 			print("Message to be hashed is", x, random_bit, key)
-			
+		#if len(random_bit_en) < 5:
+		#	random_bit_en += '00'
 		hash.update(x.encode()+random_bit.encode()+key.encode())
-		if random_bit != '':
-			random_bit_en = ':' + random_bit_en
-		encoded_msg.append(hash.hexdigest()[int(len(hash.hexdigest())/2):] + random_bit_en)
+		encoded_msg.append(hash.hexdigest()[int(len(hash.hexdigest())/2):])
 		encoded_msg.append(hash.hexdigest()[:int(len(hash.hexdigest())/2)])
-	return encoded_msg
+		mutation_key.append(random_bit_en)
+	
+	return encoded_msg, mutation_key
 
 if __name__ == '__main__':
 	import argparse
@@ -54,5 +56,9 @@ if __name__ == '__main__':
 		args.key = input('Key for message: ')
 	else:
 		args.key = ' '.join(args.key)
-
-	print('\nEncoded message:', ' '.join(encode(args.msg, args.key, args.hash, args.verbose, args.mutate)))
+	
+	encoded = encode(args.msg, args.key, args.hash, args.verbose, args.mutate)
+	
+	print('\nEncoded message:', ' '.join(encoded[0]))
+	if encoded[1] != []:
+		print('Mutation key:', ':'.join(encoded[1]))
